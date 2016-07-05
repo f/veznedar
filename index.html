@@ -61,52 +61,7 @@ small {
 
 <script type="text/javascript">//<![CDATA[
 $(window).on('load', function() {
-function verb(root, form) {
-  root = root.length > 3 ? findRoot(root) : root
-	var word = form
-  .replace(/f/g, root[0]||"")
-  .replace(/l/g, root[2]||"")
-  .replace(/'/g, root[1]||"")
-  if (root[3]) {
-    word = word.replace(/.$/, root[3])
-  }
-  return word
-}
 
-function findRoot(word) {
-	return word
-  .replace(/^m.|^t./, "")
-  .replace(/.t$/g, "")
-  .replace(/[aeiouıüö]/g, "")
-  .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
-}
-
-function findForm(word, root) {
-	return word
-  .replace(new RegExp(root[0]), "f")
-  .replace(new RegExp(root[1]+root[1]), "''")
-  .replace(new RegExp("(.)"+root[1]+"(.)"), "$1'$2")
-  .replace(new RegExp(root[2]), "l")
-}
-
-$("#word").on("input", function () {
-	var root = findRoot($(this).val())
-  var form = findForm($(this).val(), root)
-  $("#root").val(root)  	
-  $("#form").val(form)
-})
-
-$(":input").on("input", function () {
-	$("#result").text(verb($("#root").val(), $("#form").val()))
-})
-
-$(":input").on("focus", function () {
-	if (timer) {
-  	clearInterval(timer)
-    clearInterval(wordTimer)
-    clearInterval(rootTimer)
-  }
-})
 
 var roots = {
 	"fatih": "mektup",
@@ -122,6 +77,77 @@ var roots = {
   "kemal": "teslim",
   "müşrik": "dehşet"
 }
+
+function formal(form) {
+	return form
+  .replace(/x/g, "f")
+  .replace(/q/g, "'")
+  .replace(/w/g, "l")
+}
+
+function deformal(form) {
+	return form
+  .replace(/f/g, "x")
+  .replace(/\'/g, "q")
+  .replace(/l/g, "w")
+}
+
+function verb(root, form) {
+  root = root.length > 3 ? findRoot(root) : root
+	var word = form
+  .replace(/x/g, root[0]||"")
+  .replace(/w/g, root[2]||"")
+  .replace(/q/g, root[1]||"")
+  if (root[3]) {
+    word = word.replace(/.$/, root[3])
+  }
+  return word
+}
+
+function findRoot(word) {
+	return word
+  .replace(/^m.|^t./, "")
+  .replace(/.t$|.n$/g, "")
+  .replace(/[aeiouıüö]/g, "")
+  .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
+}
+
+function findForm(word, root) {
+	return word
+  .replace(new RegExp(root[0]), "x")
+  .replace(new RegExp(root[1]+root[1]), "qq")
+  .replace(new RegExp("(.)"+root[1]+"(.)"), "$1q$2")
+  .replace(new RegExp(root[2]), "w")
+}
+
+$("#word").on("input", function () {
+	var root = findRoot($(this).val())
+  var form = findForm($(this).val(), root)
+  $("#root").val(root).data('root', root)
+  $("#form").val(formal(form)).data('form', form)
+  $("#result").text(verb(root, form))
+})
+
+$("#form").on("input", function () {
+	var root = findRoot($("#root").val())
+  var form = findForm(deformal($(this).val()), root)
+	$("#result").text(verb(root, form))
+})
+
+$("#root").on("input", function () {
+	var root = findRoot($(this).val())
+  var form = findForm($("#form").data('form'), root)
+	$("#result").text(verb(root, form))
+})
+
+$(":input").on("focus", function () {
+	if (false && timer) {
+  	clearInterval(timer)
+    clearInterval(wordTimer)
+    clearInterval(rootTimer)
+  }
+})
+
 var wordTimer, rootTimer
 
 var demoIndex = 0
@@ -153,14 +179,16 @@ function demoish() {
           .val(root.substr(0, i))
           .trigger('input')
           i++
-        }, 100)
-      }, 600)
+        }, 70)
+      }, 500)
     }
-  }, 100)
+  }, 70)
 }
 
 demoish()
 var timer = setInterval(demoish, 3000);
+
+
 });//]]> 
 
 </script>
