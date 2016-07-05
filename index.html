@@ -1,264 +1,90 @@
-<html><head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src="http://code.jquery.com/jquery-git.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="./main.css">
 
-  <script type="text/javascript" src="//code.jquery.com/jquery-git.js"></script>
-
-  <style type="text/css">
-    body {
-  font-family: "Helvetica Neue", sans-serif;
-  background-color: #F3F5F6;
-  padding-top: 30px;
-}
-
-.cont {
-  margin: 0 auto;
-  width: 340px;
-}
-
-label {
-  font-size: 14px;
-  color: #ccc;
-  margin-bottom: 20px;
-  display: block;
-}
-
-input {
-  display: block;
-  font-size: 16px;
-  padding: 10px 0;
-  border-radius: 1px;
-  background-color: transparent;
-  width: 340px;
-  border: 0;
-  border-bottom: 2px solid #f0f;
-  outline: none;
-  color: #aaa;
-}
-
-input:focus,
-input.focus {
-  color: #222;
-}
-
-#result {
-  font-size: 40px;
-  padding: 20px;
-  text-align: center;
-  background-color: #ffc;
-  width: 300px;
-  height: 45px;
-}
-
-hr {
-  border: 0;
-  height: 5px;
-  margin-top: 30px;
-  background-color: #a00;
-}
-
-small {
-  font-size: 12px;
-  color: #ccc;
-  margin: 20px auto;
-  display: block;
-  margin-top: 10px;
-}
-
-blockquote {
-  margin: 10px;
-  margin-top: 30px;
-  font-family: serif;
-  color: #aaa;
-  font-size: 13px;
-  line-height: 15px;
-}
-
-blockquote em {
-  display: block;
-  margin-left: 40px;
-  margin-top: 10px;
-}
-code {
-  background-color: #fff;
-  border-radius: 2px;
-  display:block;
-  margin: 5px;
-  text-align: center;
-}
-footer {
-  text-align: center;
-  margin-top: 50px;
-  color: #ccc;
-  font-size: 12px;
-}
-  </style>
-
-  <title>Veznedar: Vezin Üreteci</title>
-
-<script type="text/javascript">//<![CDATA[
-$(window).on('load', function() {
-
-var roots = {
-	"fatih": "mektup",
-  "mektubat": "şerbet",
-  "teşekkür": "fikir",
-  "müteşekkir": "teşebbüs",
-  "teslim": "bereket",
-  "tanzimat": "harab",
-  "medrese": "rütbe",
-  "meşrubat": "katib",
-  "tekerrür": "nefes",
-  "mahsun": "zulüm",
-  "kemal": "teslim",
-  "müşrik": "dehşet",
-  "meşhur": "cahil"
-}
-
-function formal(form) {
-	return form
-  .replace(/x/g, "f")
-  .replace(/q/g, "'")
-  .replace(/w/g, "l")
-}
-
-function deformal(form) {
-	return form
-  .replace(/f/g, "x")
-  .replace(/\'/g, "q")
-  .replace(/l/g, "w")
-}
-
-function verb(root, form) {
-  root = root.length > 3 ? findRoot(root) : root
-	var word = form
-  .replace(/x/g, root[0]||"")
-  .replace(/w/g, root[2]||"")
-  .replace(/q/g, root[1]||"")
-  if (root[3]) {
-    word = word.replace(/.$/, root[3])
-  }
-  return word
-}
-
-function findRoot(word) {
-	return word
-  .replace(/^m.|^t./, "")
-  .replace(/.t$|.tun$/g, "")
-  .replace(/[aeiouıüö]/g, "")
-  .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
-}
-
-function findForm(word, root) {
-	return word
-  .replace(new RegExp(root[0]), "x")
-  .replace(new RegExp(root[1]+root[1]), "qq")
-  .replace(new RegExp("(.)"+root[1]+"(.)"), "$1q$2")
-  .replace(new RegExp(root[2]), "w")
-}
-
-$("#word").on("input", function () {
-	var root = findRoot($(this).val())
-  var form = findForm($(this).val(), root)
-  $("#root").val(root).data('root', root)
-  $("#form").val(formal(form)).data('form', form)
-  $("#result").text(verb(root, form))
-})
-
-$("#form").on("input", function () {
-	var root = findRoot($("#root").val())
-  var form = findForm(deformal($(this).val()), root)
-	$("#result").text(verb(root, form))
-})
-
-$("#root").on("input", function () {
-	var root = findRoot($(this).val())
-  var form = findForm($("#form").data('form'), root)
-	$("#result").text(verb(root, form))
-})
-
-$(":input").on("focus", function () {
-	if (timer) {
-  	clearInterval(timer)
-    clearInterval(wordTimer)
-    clearInterval(rootTimer)
-  }
-})
-
-var wordTimer, rootTimer
-
-var demoIndex = 0
-function demoish() {
-	var keys = Object.keys(roots)
-  if (!keys[demoIndex]) {
-  	demoIndex = 0
-  }
-	var word = Object.keys(roots)[demoIndex]
-  var root = roots[word]
-  demoIndex++
-	clearInterval(wordTimer)
-  clearInterval(rootTimer)
-  $("#word, #root").val("").removeClass('focus')
-  i = 0
-	wordTimer = setInterval(function () {
-  	$("#word").addClass("focus")
-    .val(word.substr(0, i))
-    .trigger('input')
-    i++
-    
-    if (word.length == i-1) {
-    	$("#word, #root").removeClass('focus')
-    	clearInterval(wordTimer)
-      i = 0
-      setTimeout(function () {
-        rootTimer = setInterval(function () {
-          $("#root").addClass("focus")
-          .val(root.substr(0, i))
-          .trigger('input')
-          i++
-        }, 70)
-      }, 500)
-    }
-  }, 70)
-}
-
-demoish()
-var timer = setInterval(demoish, 3000);
-
-});//]]> 
-
-</script>
-
-  
+    <title>Veznedar: Vezin Üreteci</title>
 </head>
 
 <body>
+    <div class="cont">
+        <h1>Veznedar</h1>
 
+        <small><b>arapça vezin üreteci</b> etimolojik temel öğrenme amacıyla
+        geliştirilmiştir, hesaplamaya dayalı olduğundan hatalar mevcut
+        olabilir. bazı kelimelerin köklerini çıkarmakta sorun yaşayabilir.
+        <b>bilimsel kaynak olarak gösterilmemelidir.</b></small>
 
-<div class="cont">
-  <h1>Veznedar</h1>
-  <small><b>arapça vezin üreteci</b> etimolojik temel öğrenme amacıyla geliştirilmiştir, hesaplamaya dayalı olduğundan hatalar mevcut olabilir. bazı kelimelerin köklerini çıkarmakta sorun yaşayabilir. <b>bilimsel kaynak olarak gösterilmemelidir.</b></small>
-  <label>
-    <span>Vezni Alınacak Kelime:</span>
-    <input type="text" id="word" placeholder="ör. müteşekkir">
-  </label>
-  <label>
-    <span>Kökü Alınacak Kelime ya da Kök:</span>
-    <input type="text" id="root" placeholder="ör. şkr, şükür">
-  </label>
-  <label>
-    <span>Tahmini Vezin:</span>
-    <input type="text" id="form" placeholder="ör. fa'il">
-  </label>
-  <div id="result"></div>
-  
-  <hr>
-<blockquote>
-  “Arap dilinin en çarpıcı yanı, kelimeleri kalıp gibi birtakım matematiksel formüllere döküp anlamlı sonuçlar çıkarma özelliği. Arapça hemen her kelime, <b><code>‘kök çarpı vezin eşittir kelime’</code></b> formülüyle ifade edilebiliyor. <b>Burada kök dediğim, normalde üç sessiz harften oluşan sert bir çekirdek</b>. <b>Vezin ise</b>, bu harflerin arasına, önüne ve sonuna eklenen birtakım kısa ve uzun seslilerden (ve ayrıca m, s, t gibi birkaç sessizden) oluşan bir ses kalıbı. <b>Bir tür şablon.</b>”
-<em>
-- Sevan Nişanyan.<br>“Elifin Öküzü ya da Sürprizler Kitabı.”</em>.
-</blockquote>
-</div>
+        <label>
+          <span>Vezni Alınacak Kelime:</span>
+          <input id="word" placeholder="ör. müteşekkir" type="text">
+        </label>
+        <label>
+          <span>Kökü Alınacak Kelime ya da Kök:</span>
+        <input id="root" placeholder="ör. şkr, şükür" type="text">
+        </label>
+        <label>
+          <span>Tahmini Vezin:</span>
+          <input id="form" placeholder="ör. fa'il" type="text">
+        </label>
 
-<footer><a href="http://twitter.com/fkadev">@fkadev</a> tarafından yapıldı.<br><br><iframe src="https://ghbtns.com/github-btn.html?user=f&repo=veznedar&type=fork" frameborder="0" scrolling="0" width="60px" height="20px"></iframe></footer>  
-</body></html>
+        <div id="result"></div>
+        <a class="emsile" href="#emsile">emsile çekimleri</a>
+
+        <ol class="emsile-result">
+          <li title="mazi fiil: geçmiş zamanı ifade eder"><b data-vezn="xaqawa"></b> yaptı</li>
+          <li title="muzari fiil: şimdiki zamanı ifade eder"><b data-vezn="yexquwu"></b> yapıyor</li>
+          <li title="mastar: fiilin mastar halidir"><b data-vezn="xaqwan"></b> yapmak</li>
+          <li title="ism-i fail: özne ismi"><b data-vezn="xâqiw"></b> yapan</li>
+          <li title="ism-i mef'ul: nesne ismi"><b data-vezn="mexqûw"></b> yapılan</li>
+          <li title="cehd-i mutlak: geçmişin olumsuzu"><b data-vezn="l!em yexquw"></b> yapmadı</li>
+          <li title="cehd-i müstağrak: kapsayıcı olumsuzluk"><b data-vezn="l!emmâ yexquw"></b> yapmadı, yapmaz da</li>
+          <li title="nefy-i hâl: şimdiki zamanın olumsuzu"><b data-vezn="mâ yexquwu"></b> yapmıyor</li>
+          <li title="nefy-i istikbâl: gelecek zamanın olumsuzu"><b data-vezn="l!â yexquwu"></b> yapmayacak</li>
+          <li title="te'kid-i nefy-i istikbâl: gelecek zamanın mutlak olumsuzu"><b data-vezn="l!en yexquwa"></b> asla yapmayacak</li>
+          <li title="emr-i gâib: üçüncü şahsa emir"><b data-vezn="l!ixenquw"></b> yapsın!</li>
+          <li title="nehy-i gâib: üçüncü şahsa yasaklama"><b data-vezn="l!â yexquw"></b> yapmasın!</li>
+          <li title="emr-i hâzır: ikinci şahsa emir"><b data-vezn="uxquw"></b> yap!</li>
+          <li title="nehy-i hâzır: ikinci şahsa yasaklama"><b data-vezn="l!â texquw"></b> yapma!</li>
+          <li title="ism-i zaman, ism-i mekan: zaman ismi, mekan ismi"><b data-vezn="mexqaw"></b> yapılan yer veya zaman</li>
+          <li title="ism-i âlet: âlet ismi"><b data-vezn="minsar"></b> yapan alet</li>
+          <li title="mastar binâ-i merre: tek seferlik mastar"><b data-vezn="xaqwaten"></b> bir kez yapmak</li>
+          <li title="mastar binâ-i nev': çeşit yapıcı mastar"><b data-vezn="xiqwaten"></b> bir şekilde yapmak</li>
+          <li title="ism-i tasgîr: küçültme ismi"><b data-vezn="xuqayw"></b> yapımcık</li>
+          <li title="ism-i mensûb: ait olma ismi"><b data-vezn="xaqwî"></b> yapıma ait</li>
+          <li title="mübalağa ism-i fâil: özne isminin abartılmışı"><b data-vezn="xeqqâw"></b> abartılı en çok yapan</li>
+          <li title="ism-i tafzîl: en üstünlük sıfatı"><b data-vezn="exqaw"></b> daha fazla en çok yapan</li>
+          <li title="fiil-i teaccub-i evvel: birincil şaşırma fiili"><b data-vezn="mâ exqawahû"></b> ne ilginç bir yapım! (şaşırma)</li>
+          <li title="fiil-i teaccub-i sânî: ikincil şaşırma fiili"><b data-vezn="ve exqıw bihî"></b> ne ilginç bir yapım! (şaşırma)</li>
+        </ol>
+
+        <hr>
+
+        <blockquote>
+            “Arap dilinin en çarpıcı yanı, kelimeleri kalıp gibi birtakım
+            matematiksel formüllere döküp anlamlı sonuçlar çıkarma özelliği.
+            Arapça hemen her kelime, <b><code>‘kök çarpı vezin eşittir
+            kelime’</code></b> formülüyle ifade edilebiliyor. <b>Burada kök
+            dediğim, normalde üç sessiz harften oluşan sert bir çekirdek</b>.
+            <b>Vezin ise</b>, bu harflerin arasına, önüne ve sonuna eklenen
+            birtakım kısa ve uzun seslilerden (ve ayrıca m, s, t gibi birkaç
+            sessizden) oluşan bir ses kalıbı. <b>Bir tür şablon.</b>” <em>-
+            Sevan Nişanyan.<br>
+            “Elifin Öküzü ya da Sürprizler Kitabı.”</em>.
+        </blockquote>
+    </div>
+
+    <footer>
+        <a href="http://twitter.com/fkadev">@fkadev</a> tarafından yapıldı.<br>
+        <br>
+        <iframe frameborder="0" height="20px" scrolling="0" src=
+        "https://ghbtns.com/github-btn.html?user=f&repo=veznedar&type=fork"
+        width="60px"></iframe>
+    </footer>
+    <script src="./examples.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>
