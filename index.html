@@ -119,7 +119,8 @@ var roots = {
   "meşrubat": "katib",
   "tekerrür": "nefes",
   "mahsun": "zulüm",
-  "kemal": "teslim"
+  "kemal": "teslim",
+  "müşrik": "dehşet"
 }
 var wordTimer, rootTimer
 
@@ -152,10 +153,10 @@ function demoish() {
           .val(root.substr(0, i))
           .trigger('input')
           i++
-        }, 70)
-      }, 500)
+        }, 100)
+      }, 600)
     }
-  }, 70)
+  }, 100)
 }
 
 demoish()
