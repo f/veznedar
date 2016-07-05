@@ -131,7 +131,7 @@ function verb(root, form) {
 function findRoot(word) {
 	return word
   .replace(/^m.|^t./, "")
-  .replace(/.t$|.n$/g, "")
+  .replace(/.t$|.tun$/g, "")
   .replace(/[aeiouıüö]/g, "")
   .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
 }
