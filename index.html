@@ -62,7 +62,6 @@ small {
 <script type="text/javascript">//<![CDATA[
 $(window).on('load', function() {
 
-
 var roots = {
 	"fatih": "mektup",
   "mektubat": "şerbet",
@@ -141,7 +140,7 @@ $("#root").on("input", function () {
 })
 
 $(":input").on("focus", function () {
-	if (false && timer) {
+	if (timer) {
   	clearInterval(timer)
     clearInterval(wordTimer)
     clearInterval(rootTimer)
@@ -187,7 +186,6 @@ function demoish() {
 
 demoish()
 var timer = setInterval(demoish, 3000);
-
 
 });//]]> 
 
