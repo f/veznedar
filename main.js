@@ -6,7 +6,7 @@ function std(str) {
   }
   return str
   .toLocaleLowerCase()
-  .replace(/[^a-zA-ZıİüÜöÖşŞğĞ\(\)âîû\s]/g, "")
+  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s]/g, "")
   .replace(/\).\(/g, "")
 }
 
@@ -39,9 +39,10 @@ function verb(root, form) {
 
 function findRoot(word) {
   var root = std(word)
-  .replace(/^m.|^t./g, "")
+  .replace(/^in/, "")
+  .replace(/^m.|^t./, "")
   .replace(/^[iı]st[iı]|^m[üu]st/, "")
-  .replace(/.t$|.tun$|an$/g, "")
+  .replace(/.t$|tun$/, "")
   .replace(/[aeiouıüö]/g, "")
   .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
 
@@ -153,6 +154,5 @@ function demoish() {
   }, 70)
 }
 
-//demoish()
-//var timer = setInterval(demoish, 3000);
-var timer;
+demoish()
+var timer = setInterval(demoish, 3000);
