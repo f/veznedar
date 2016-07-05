@@ -1,0 +1,179 @@
+<html><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-git.js"></script>
+
+  <style type="text/css">
+    body {
+    font-family: "Helvetica Neue", sans-serif;
+    background-color: #F3F5F6;
+}
+
+.cont {
+  margin: 0 auto;
+  width: 340px;
+}
+
+label {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 20px;
+  display: block;
+}
+
+input {
+  display: block;
+  font-size: 16px;
+  padding: 10px 0;
+  border-radius: 1px;
+  background-color: transparent;
+  width: 300px;
+  border: 0;
+  border-bottom: 2px solid #f0f;
+  outline: none;
+  color: #aaa;
+}
+
+input:focus, input.focus {
+  color: #222;
+}
+
+#result {
+  font-size: 40px;
+  padding: 20px;
+  text-align: center;
+  background-color: #ffc;
+  width: 260px;
+}
+  </style>
+
+  <title>Vezin Üreteci</title>
+
+<script type="text/javascript">//<![CDATA[
+$(window).on('load', function() {
+function verb(root, form) {
+  root = root.length > 3 ? findRoot(root) : root
+	var word = form
+  .replace(/f/g, root[0]||"")
+  .replace(/l/g, root[2]||"")
+  .replace(/'/g, root[1]||"")
+  if (root[3]) {
+    word = word.replace(/.$/, root[3])
+  }
+  return word
+}
+
+function findRoot(word) {
+	return word
+  .replace(/^m.|^t./, "")
+  .replace(/.t$/g, "")
+  .replace(/[aeiouıüö]/g, "")
+  .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
+}
+
+function findForm(word, root) {
+	return word
+  .replace(new RegExp(root[0]), "f")
+  .replace(new RegExp(root[1]+root[1]), "''")
+  .replace(new RegExp("(.)"+root[1]+"(.)"), "$1'$2")
+  .replace(new RegExp(root[2]), "l")
+}
+
+$("#word").on("input", function () {
+	var root = findRoot($(this).val())
+  var form = findForm($(this).val(), root)
+  $("#root").val(root)  	
+  $("#form").val(form)
+})
+
+$(":input").on("input", function () {
+	$("#result").text(verb($("#root").val(), $("#form").val()))
+})
+
+$(":input").on("focus", function () {
+	if (timer) {
+  	clearInterval(timer)
+    clearInterval(wordTimer)
+    clearInterval(rootTimer)
+  }
+})
+
+var roots = {
+	"fatih": "mektup",
+  "mektubat": "şerbet",
+  "teşekkür": "fikir",
+  "müteşekkir": "teşebbüs",
+  "teslim": "bereket",
+  "tanzimat": "harab",
+  "medrese": "rütbe",
+  "meşrubat": "katib",
+  "tekerrür": "nefes",
+  "mahsun": "zulüm",
+  "kemal": "teslim"
+}
+var wordTimer, rootTimer
+
+var demoIndex = 0
+function demoish() {
+	var keys = Object.keys(roots)
+  if (!keys[demoIndex]) {
+  	demoIndex = 0
+  }
+	var word = Object.keys(roots)[demoIndex]
+  var root = roots[word]
+  demoIndex++
+	clearInterval(wordTimer)
+  clearInterval(rootTimer)
+  $("#word, #root").val("").removeClass('focus')
+  i = 0
+	wordTimer = setInterval(function () {
+  	$("#word").addClass("focus")
+    .val(word.substr(0, i))
+    .trigger('input')
+    i++
+    
+    if (word.length == i-1) {
+    	$("#word, #root").removeClass('focus')
+    	clearInterval(wordTimer)
+      i = 0
+      setTimeout(function () {
+        rootTimer = setInterval(function () {
+          $("#root").addClass("focus")
+          .val(root.substr(0, i))
+          .trigger('input')
+          i++
+        }, 70)
+      }, 500)
+    }
+  }, 70)
+}
+
+demoish()
+var timer = setInterval(demoish, 3000);
+});//]]> 
+
+</script>
+
+  
+</head>
+
+<body>
+  <div class="cont">
+  <h1>Arapça Vezin Üreteci</h1>
+  <label>
+    <span>Kelime:</span>
+    <input type="text" id="word" placeholder="ör. müteşekkir" class="">
+  </label>
+  <label>
+    <span>Kök ya da Diğer Kelime:</span>
+    <input type="text" id="root" placeholder="ör. şükür" class="focus">
+  </label>
+  <label>
+    <span>Tahmini Vezin:</span>
+    <input type="text" id="form" placeholder="ör. fa'il">
+  </label>
+  <div id="result">meşrubat</div>
+</div>
+  
+</body></html>
