@@ -7,6 +7,7 @@ body {
 .cont {
   margin: 0 auto;
   width: 340px;
+  position: relative;
 }
 
 label {
@@ -111,4 +112,20 @@ footer {
 
 .emsile-result li em {
   color: #aaa;
+}
+
+.ornekler {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 10px;
+  text-decoration: none;
+  color: #aaa;
+  display: block;
+  padding: 10px;
+  background-color: #222;
+}
+
+.ornekler.shown {
+  opacity: 0.5;
 }

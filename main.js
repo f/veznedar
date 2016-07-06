@@ -129,7 +129,7 @@ $(":input").on("focus", function () {
   }
 })
 
-var wordTimer, rootTimer
+var timer, wordTimer, rootTimer
 
 var demoIndex = 0
 function demoish() {
@@ -166,5 +166,35 @@ function demoish() {
   }, 70)
 }
 
-demoish()
-var timer = setInterval(demoish, 3000)
+function start() {
+  if (!localStorage.getItem('examplesDisabled')) {
+    demoish()
+    timer = setInterval(demoish, 3000)
+    $(".ornekler").addClass('shown').text("örnekleri gizle")
+    return true
+  }
+  $(".ornekler").removeClass('shown').text("örnekleri göster")
+  return false
+}
+
+$(".ornekler").click(function () {
+  if (!localStorage.getItem('examplesDisabled')) {
+    localStorage.setItem('examplesDisabled', 'true')
+    clearInterval(timer)
+    clearInterval(wordTimer)
+    clearInterval(rootTimer)
+    $(":input").val("")
+    $("#result").text("")
+    $(".emsile-result").hide()
+    $(".ornekler").removeClass('shown').text("örnekleri göster")
+  } else {
+    localStorage.removeItem('examplesDisabled')
+    start()
+  }
+})
+
+start()
+
+if (location.hostname !== "veznedar.co") {
+  location.href = "http://veznedar.co"
+}
