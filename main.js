@@ -167,7 +167,7 @@ function demoish() {
           .trigger('input')
           i++
         }, 70)
-      }, 500)
+      }, 1200)
     }
   }, 70)
 }
