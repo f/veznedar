@@ -5,7 +5,7 @@ window.roots = {
     "teşekkür": "fikir",
     "müteşekkir": "teşebbüs",
     "teslim": "bereket",
-    "makul": "emir",
+    "ma'kul": "emir",
     "tanzimat": "harab",
     "medrese": "rütbe",
     "meşrubat": "katib",
