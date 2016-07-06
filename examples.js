@@ -15,7 +15,7 @@ window.roots = {
     "kemal": "teslim",
     "müşrik": "dehşet",
     "meşhur": "cahil",
-    "memur": "alim",
+    "me'mur": "alim",
     "muzaffer": "kudüs",
     "muhabir": "hilafet",
     "mektup": "rahmet",
