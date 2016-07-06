@@ -41,6 +41,12 @@ function findRoot(word) {
   var root = std(word)
 
   if (root.length > 4) {
+
+    var possibleRoot = root.replace(/[aeiouıüö]/g, "")
+    if (possibleRoot.length == 3) {
+      return possibleRoot
+    }
+
     root = root.replace(/^in/, "")
     .replace(/^[iı]st[iı]|^m?[üu]st/, "")
     .replace(/^m.|^t./, "")
