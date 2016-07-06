@@ -23,4 +23,5 @@ window.roots = {
     "teşebbüs": "vekil",
     "selamet": "kerem",
     "iktidar": "nazar",
+    "müfettiş": "ders",
 }
