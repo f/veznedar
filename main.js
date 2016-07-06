@@ -7,7 +7,7 @@ function std(str) {
   }
   return str
   .toLocaleLowerCase()
-  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s\']/g, "")
+  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s\'\!]/g, "")
 }
 
 function formal(form) {
@@ -15,6 +15,7 @@ function formal(form) {
   .replace(/x/g, "f")
   .replace(/q/g, "'")
   .replace(/w/g, "l")
+  .replace(/!/g, "\"")
 }
 
 function deformal(form) {
@@ -22,6 +23,7 @@ function deformal(form) {
   .replace(/f/g, "x")
   .replace(/\'/g, "q")
   .replace(/l/g, "w")
+  .replace(/\"/g, "!")
 }
 
 function verb(root, form) {
@@ -30,11 +32,10 @@ function verb(root, form) {
   .replace(/x/g, root[0]||"")
   .replace(/w/g, root[2]||"")
   .replace(/q/g, root[1]||"")
-  .replace(/\(.\)/g, "")
-  if (root[3]) {
-    word = word.replace(/.$/, root[3])
-  }
-  word = word.replace(/[aeiouıüö]([aeiouıüö])/g, "$1")
+  .replace(/!/g, root[3]||"")
+  word = word
+    .replace(/\(.\)/g, "")
+    .replace(/[aeiouıüö]([aeiouıüö])/g, "$1")
   return std(word)
 }
 
@@ -54,14 +55,16 @@ function findRoot(word) {
 
     root = root.replace(/^in/, "")
     .replace(/^[iı]st[iı]|^m?[üu]st/, "")
-    .replace(/^m.|^t./, "")
+    .replace(/^m[aeiouıüö]|^t[aeiouıüö]/, "")
     .replace(/yy?[ae]t$/, "")
     .replace(/[ae]t$|tun$/, "")
   }
 
-  root = root
-    .replace(/[aeiouıüö]/g, "")
-    .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
+  root = root.replace(/[aeiouıüö]/g, "")
+
+  if (root.length >= 4) {
+    root = root.replace(/.*(.)(.)\2(.)/g, "$1$2$3")
+  }
 
   var wovel = word.match(/[aeiouıüö]/)
   if (root.length == 2 && wovel) {
@@ -82,6 +85,10 @@ function findForm(word, root) {
   .replace(new RegExp(root[1]+root[1]), "qq")
   .replace(new RegExp("(.)"+root[1]+"(.)"), "$1q$2")
   .replace(new RegExp(root[2]), "w")
+
+  if (root.length > 3) {
+    form = form.replace(new RegExp(root[3]), "!")
+  }
 
   var wovel = root && root[0].match(/[aeiouıüö]/)
   if (wovel) {
@@ -135,13 +142,12 @@ $(".emsile").click(function () {
 
 $(":input").on("focus", function () {
   if (timer && demoIndex > 0) {
-    demoIndex = 0
+    localStorage.setItem('examplesDisabled', 'true')
+    $(".ornekler").removeClass('shown').text("örneklere devam et")
+    $("#word, #root").removeClass('focus')
     clearInterval(timer)
     clearInterval(wordTimer)
     clearInterval(rootTimer)
-    $(":input").val("")
-    $("#result").text("")
-    $(".emsile-result").hide()
   }
 })
 
