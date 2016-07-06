@@ -175,7 +175,7 @@ function demoish() {
 function start() {
   if (!localStorage.getItem('examplesDisabled')) {
     demoish()
-    timer = setInterval(demoish, 4200)
+    timer = setInterval(demoish, 5000)
     $(".ornekler").addClass('shown').text("örnekleri gizle")
     return true
   }
