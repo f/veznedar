@@ -129,3 +129,8 @@ footer {
 .ornekler.shown {
   opacity: 0.5;
 }
+
+h1 small {
+  display: inline;
+  font-size: 30px;
+}

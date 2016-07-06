@@ -19,5 +19,6 @@ window.roots = {
     "muhabir": "hilafet",
     "mektup": "rahmet",
     "müneccim": "teftiş",
-    "teşebbüs": "vekil"
+    "teşebbüs": "vekil",
+    "selamet": "kerem"
 }

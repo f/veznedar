@@ -7,7 +7,6 @@ function std(str) {
   return str
   .toLocaleLowerCase()
   .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s\']/g, "")
-  .replace(/\).\(/g, "")
 }
 
 function formal(form) {
@@ -34,6 +33,7 @@ function verb(root, form) {
   if (root[3]) {
     word = word.replace(/.$/, root[3])
   }
+  word = word.replace(/[aeiouıüö]([aeiouıüö])/g, "$1")
   return std(word)
 }
 
@@ -69,7 +69,7 @@ function findForm(word, root) {
 
   var wovel = root && root[0].match(/[aeiouıüö]/)
   if (wovel) {
-    form = form.replace(/x/g, "("+wovel[0]+")x")
+    form = form.replace(/x/g, "x)"+wovel[0]+"(")
   }
   return form.split("").reverse().join("")
 }
@@ -93,7 +93,7 @@ $("#root").on("input", function () {
   var root = findRoot($(this).val())
   var form = findForm($("#form").data('form'), root)
   $("#result").text(verb(root, form))
-  verbals()
+  //verbals()
 })
 
 function verbals() {
@@ -195,6 +195,3 @@ $(".ornekler").click(function () {
 
 start()
 
-if (location.hostname !== "veznedar.co") {
-  location.href = "http://veznedar.co"
-}
