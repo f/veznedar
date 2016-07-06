@@ -1,5 +1,6 @@
 window.roots = {
     "fatih": "mektup",
+    "mübaşir": "devam",
     "mektubat": "şerbet",
     "teşekkür": "fikir",
     "müteşekkir": "teşebbüs",
@@ -21,5 +22,5 @@ window.roots = {
     "müneccim": "teftiş",
     "teşebbüs": "vekil",
     "selamet": "kerem",
-    "iktidar": "nazar"
+    "iktidar": "nazar",
 }
