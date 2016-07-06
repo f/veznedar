@@ -7,7 +7,7 @@ function std(str) {
   }
   return str
   .toLocaleLowerCase()
-  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s\'\!]/g, "")
+  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s\'\"\!]/g, "")
 }
 
 function formal(form) {
