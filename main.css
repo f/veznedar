@@ -97,6 +97,7 @@ footer {
 
 .emsile-result {
   display: none;
+  padding: 0;
 }
 
 .emsile-result li {

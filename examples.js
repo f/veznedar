@@ -18,4 +18,5 @@ window.roots = {
     "muzaffer": "kudüs",
     "muhabir": "hilafet",
     "mektup": "rahmet",
+    "müneccim": "teftiş"
 }

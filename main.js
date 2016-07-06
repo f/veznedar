@@ -6,7 +6,7 @@ function std(str) {
   }
   return str
   .toLocaleLowerCase()
-  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s]/g, "")
+  .replace(/[^a-zA-ZıİüÜöÖşŞğĞçÇ\(\)âîû\s\']/g, "")
   .replace(/\).\(/g, "")
 }
 
@@ -39,12 +39,17 @@ function verb(root, form) {
 
 function findRoot(word) {
   var root = std(word)
-  .replace(/^in/, "")
-  .replace(/^m.|^t./, "")
-  .replace(/^[iı]st[iı]|^m[üu]st/, "")
-  .replace(/.t$|tun$/, "")
-  .replace(/[aeiouıüö]/g, "")
-  .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
+
+  if (root.length > 4) {
+    root = root.replace(/^in/, "")
+    .replace(/^m.|^t./, "")
+    .replace(/^[iı]st[iı]|^m[üu]st/, "")
+    .replace(/.t$|tun$/, "")
+  }
+
+  root = root
+    .replace(/[aeiouıüö]/g, "")
+    .replace(/.*(.)(.){2}(.)$/, "$1$2$3")
 
   var wovel = word.match(/[aeiouıüö]/)
   if (root.length == 2 && wovel) {
@@ -104,16 +109,22 @@ function verbals() {
 
 $(".emsile").click(function () {
   verbals()
-  $(".emsile-result").slideToggle()
+  if ($("#root").val() != "") {
+    $(".emsile-result").slideToggle()
+  }
 })
 
 // TIMER //////////////////////////
 
 $(":input").on("focus", function () {
-  if (timer) {
+  if (timer && demoIndex > 0) {
+    demoIndex = 0
     clearInterval(timer)
     clearInterval(wordTimer)
     clearInterval(rootTimer)
+    $(":input").val("")
+    $("#result").text("")
+    $(".emsile-result").hide()
   }
 })
 
@@ -155,4 +166,4 @@ function demoish() {
 }
 
 demoish()
-var timer = setInterval(demoish, 3000);
+var timer = setInterval(demoish, 3000)
