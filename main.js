@@ -1,4 +1,5 @@
 var roots = window.roots || []
+var exceptions = window.exceptions || []
 
 function std(str) {
   if (!str) {
@@ -38,6 +39,10 @@ function verb(root, form) {
 }
 
 function findRoot(word) {
+  var exc = except(word)
+  if (exc) {
+    return exc.root
+  }
   var root = std(word)
 
   if (root.length > 4) {
@@ -66,6 +71,11 @@ function findRoot(word) {
 }
 
 function findForm(word, root) {
+  var exc = except(word)
+  if (exc) {
+    return exc.form
+  }
+
   root = std(root)
   var form = std(word).split("").reverse().join("")
   .replace(new RegExp(root[0]), "x")
