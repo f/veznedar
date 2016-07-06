@@ -42,8 +42,8 @@ function findRoot(word) {
 
   if (root.length > 4) {
     root = root.replace(/^in/, "")
+    .replace(/^[iı]st[iı]|^m?[üu]st/, "")
     .replace(/^m.|^t./, "")
-    .replace(/^[iı]st[iı]|^m[üu]st/, "")
     .replace(/yy?[ae]t$/, "")
     .replace(/[ae]t$|tun$/, "")
   }
