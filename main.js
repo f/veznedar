@@ -167,6 +167,15 @@ $(":input").on("focus", function () {
   }
 })
 
+$(":input").on("keyup", function () {
+  location.hash = ([
+    encodeURIComponent($("#word").val()),
+    encodeURIComponent($("#root").val()),
+    encodeURIComponent($("#form").val())]
+    .join(":")
+    .replace(/^:+|:+$/, ""))
+})
+
 var timer, wordTimer, rootTimer
 
 var demoIndex = 0
@@ -234,5 +243,33 @@ $(".ornekler").click(function () {
   }
 })
 
-start()
+$.fn.write = function (speed, callback) {
+  var i = 0
+  var $this = $(this)
+  var value = $this.val()
+  $this.val("")
+  var timer = setInterval(function () {
+    $this.addClass("focus").val(value.substr(0, i)).trigger('input')
+    i++
+    if (value.length == i-1) {
+      $this.removeClass('focus')
+      clearInterval(timer)
+      if (callback) setTimeout(callback, 500)
+    }
+  }, speed||70)
+}
 
+function main() {
+  if (location.hash != "") {
+    var words = location.hash.replace(/^#/, "").split(":")
+    if (words[0]) $("#word").val(decodeURIComponent(words[0])).trigger('input').write(100, function () {
+    if (words[1]) $("#root").val(decodeURIComponent(words[1])).trigger('input').write(100, function () {
+    if (words[2]) $("#form").val(decodeURIComponent(words[2])).trigger('input').write(100)
+    })
+    })
+  } else {
+    start()
+  }
+}
+
+main()
