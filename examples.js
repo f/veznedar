@@ -13,6 +13,7 @@ window.roots = {
     "meşrubat": "katib",
     "tekerrür": "nefes",
     "inkılab": "zabıta",
+    "seyahat": "berrak",
     "tantana": "gr",
     "muhterem": "ihtimal",
     "mahsun": "zulüm",
@@ -20,7 +21,7 @@ window.roots = {
     "müşrik": "dehşet",
     "meşhur": "cahil",
     "me'mur": "alim",
-    "fatih": "kudret",
+    "fettah": "kudret",
     "muzaffer": "kudüs",
     "muhabir": "hilafet",
     "mektup": "rahmet",
@@ -29,4 +30,6 @@ window.roots = {
     "selamet": "kerem",
     "iktidar": "nazar",
     "müfettiş": "ders",
+    "sarraf": "tahammül",
+    "rakkas": "cebir",
 }

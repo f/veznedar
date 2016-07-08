@@ -170,12 +170,15 @@ $(":input").on("focus", function () {
 var timer, wordTimer, rootTimer
 
 var demoIndex = 0
+var keys = Object.keys(roots).sort(function() {
+  return 0.5 - Math.random()
+});
+
 function demoish() {
-  var keys = Object.keys(roots)
   if (!keys[demoIndex]) {
     demoIndex = 0
   }
-  var word = Object.keys(roots)[demoIndex]
+  var word = keys[demoIndex]
   var root = roots[word]
   demoIndex++
   clearInterval(wordTimer)
