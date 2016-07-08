@@ -15,15 +15,15 @@ function formal(form) {
   .replace(/x/g, "f")
   .replace(/q/g, "'")
   .replace(/w/g, "l")
-  .replace(/!/g, "\"")
+  .replace(/!/g, "l")
 }
 
 function deformal(form) {
   return std(form)
   .replace(/f/g, "x")
   .replace(/\'/g, "q")
-  .replace(/l/g, "w")
-  .replace(/\"/g, "!")
+  .replace(/l/, "w")
+  .replace(/l/g, "!")
 }
 
 function verb(root, form) {
@@ -64,6 +64,10 @@ function findRoot(word) {
 
   if (root.length >= 4) {
     root = root.replace(/.*(.)(.)\2(.)/g, "$1$2$3")
+    if (root[1] == "t") {
+      var _root = root[0]+root[2]+root[3]
+      root = _root
+    }
   }
 
   var wovel = word.match(/[aeiouıüö]/)
@@ -100,22 +104,34 @@ function findForm(word, root) {
 $("#word").on("input", function () {
   var root = findRoot($(this).val())
   var form = findForm($(this).val(), root)
+  if ($(this).val() == "") {form = ""; root = ""}
   $("#root").val(root).data('root', root)
   $("#form").val(formal(form)).data('form', form)
   $("#result").text(verb(root, form))
-  verbals()
+
+  $(".form-d, .form-d2").text(formal(form) || "vezin")
+  $(".root-d").text(root || "kök")
+  $(".word-d, .word-d2").text($(this).val() || "...")
+  $(".root-d2").text(root || "...")
+  //verbals()
 })
 
 $("#form").on("input", function () {
   var root = findRoot($("#root").val())
   var form = findForm(deformal($(this).val()), root)
   $("#result").text(verb(root, form))
+
+  $(this).data('form', form)
+  $(".form-d2").text(formal(form) || "vezin")
 })
 
 $("#root").on("input", function () {
   var root = findRoot($(this).val())
   var form = findForm($("#form").data('form'), root)
   $("#result").text(verb(root, form))
+
+  $(".word-d2").text($(this).val() || "...")
+  $(".root-d2").text(root || "...")
   //verbals()
 })
 

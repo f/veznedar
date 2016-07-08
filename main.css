@@ -19,7 +19,7 @@ label {
 
 input {
   display: block;
-  font-size: 16px;
+  font-size: 19px;
   padding: 10px 0;
   border-radius: 1px;
   background-color: transparent;
@@ -33,6 +33,10 @@ input {
 input:focus,
 input.focus {
   color: #222;
+}
+
+input + small {
+  margin-top: 0;
 }
 
 #result {
@@ -133,4 +137,21 @@ footer {
 h1 small {
   display: inline;
   font-size: 30px;
+}
+
+.formula {
+  font-family: monospace;
+  text-align: right;
+  padding: 3px;
+  border-radius: 1px;
+  line-height: 20px;
+}
+
+input.focus + .formula,
+input:focus + .formula {
+  background-color: #fff;
+}
+
+.form-d, .form-d2, .root-d, .root-d2 {
+  color: #888;
 }
