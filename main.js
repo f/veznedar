@@ -64,7 +64,7 @@ function findRoot(word) {
 
   if (root.length >= 4) {
     root = root.replace(/.*(.)(.)\2(.)/g, "$1$2$3")
-    if (root[1] == "t") {
+    if (root.length >= 4 && root[1] == "t") {
       var _root = root[0]+root[2]+root[3]
       root = _root
     }
