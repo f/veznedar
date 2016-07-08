@@ -252,10 +252,14 @@ $(".ornekler").click(function () {
   }
 })
 
-$.fn.write = function (speed, callback) {
+$.fn.write = function (word, speed, callback) {
   var i = 0
   var $this = $(this)
-  var value = $this.val()
+  var value = $this.data('value')
+  if ($this.val() === word) {
+    if (callback) callback()
+    return
+  }
   $this.val("")
   var timer = setInterval(function () {
     $this.addClass("focus").val(value.substr(0, i)).trigger('input')
@@ -271,11 +275,10 @@ $.fn.write = function (speed, callback) {
 function main() {
   if (location.hash != "") {
     var words = location.hash.replace(/^#/, "").split(":")
-    if (words[0]) $("#word").val(decodeURIComponent(words[0])).trigger('input').write(100, function () {
-    if (words[1]) $("#root").val(decodeURIComponent(words[1])).trigger('input').write(100, function () {
-    if (words[2]) $("#form").val(decodeURIComponent(words[2])).trigger('input').write(100)
-    })
-    })
+    if (words[0]) $("#word").data('value', decodeURIComponent(words[0])).trigger('input').write(words[0], 100, function () {
+    if (words[1]) $("#root").data('value', decodeURIComponent(words[1])).trigger('input').write(words[1], 100, function () {
+    if (words[2]) $("#form").data('value', decodeURIComponent(words[2])).trigger('input').write(words[2], 100)
+    })})
   } else {
     start()
   }
