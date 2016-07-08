@@ -155,3 +155,16 @@ input:focus + .formula {
 .form-d, .form-d2, .root-d, .root-d2 {
   color: #888;
 }
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 0;
+  }
+  .cont > h1 {
+    margin: 0;
+    text-transform: lowercase;
+  }
+  .cont > small {
+    font-size: 11px;
+  }
+}
