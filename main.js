@@ -107,7 +107,10 @@ $("#word").on("input", function () {
   if ($(this).val() == "") {form = ""; root = ""}
   $("#root").val(root).data('root', root)
   $("#form").val(formal(form)).data('form', form)
-  $("#result").text(verb(root, form))
+
+  var result = verb(root, form)
+  $("#result").text(result)
+  $(".meaning").attr('href', 'http://nisanyansozluk.com/?k='+result)
 
   $(".form-d, .form-d2").text(formal(form) || "vezin")
   $(".root-d").text(root || "kök")
@@ -119,7 +122,10 @@ $("#word").on("input", function () {
 $("#form").on("input", function () {
   var root = findRoot($("#root").val())
   var form = findForm(deformal($(this).val()), root)
-  $("#result").text(verb(root, form))
+
+  var result = verb(root, form)
+  $("#result").text(result)
+  $(".meaning").attr('href', 'http://nisanyansozluk.com/?k='+result)
 
   $(this).data('form', form)
   $(".form-d2").text(formal(form) || "vezin")
@@ -128,7 +134,10 @@ $("#form").on("input", function () {
 $("#root").on("input", function () {
   var root = findRoot($(this).val())
   var form = findForm($("#form").data('form'), root)
-  $("#result").text(verb(root, form))
+
+  var result = verb(root, form)
+  $("#result").text(result)
+  $(".meaning").attr('href', 'http://nisanyansozluk.com/?k='+result)
 
   $(".word-d2").text($(this).val() || "...")
   $(".root-d2").text(root || "...")
